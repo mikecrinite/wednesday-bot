@@ -38,8 +38,9 @@ def image(x):
     return{
         0: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Monday
             ],
-        1: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Tuesday
-            "http://i.imgur.com/zBviPIU.jpg"
+        1: ["https://i.imgur.com/mfhfh7o.jpg",                                      # Tuesday
+            "http://i.imgur.com/zBviPIU.jpg",
+            "https://i.redd.it/89phh1bap9hz.jpg"
             ],
         2: ["http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",     # Wednesday MY DUDES!
                 "http://i0.kym-cdn.com/photos/images/original/001/118/749/887.jpg",
