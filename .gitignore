@@ -1,0 +1,9 @@
+# Don't add your credentials
+credentials.py
+
+# Don't add the log
+discord.log
+
+.idea/
+.idea/*
+*.idea/
