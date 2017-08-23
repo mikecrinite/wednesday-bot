@@ -43,10 +43,10 @@ def image(x):
             "https://i.redd.it/89phh1bap9hz.jpg"
             ],
         2: ["http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",     # Wednesday MY DUDES!
-                "http://i0.kym-cdn.com/photos/images/original/001/118/749/887.jpg",
-                "http://i0.kym-cdn.com/photos/images/original/000/937/093/395.png",
-                "http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",
-                "http://i0.kym-cdn.com/photos/images/original/001/279/213/5ce.jpg"
+            "http://i0.kym-cdn.com/photos/images/original/001/118/749/887.jpg",
+            "http://i0.kym-cdn.com/photos/images/original/000/937/093/395.png",
+            "http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",
+            "http://i0.kym-cdn.com/photos/images/original/001/279/213/5ce.jpg"
             ],
         3: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Thursday
             ],
