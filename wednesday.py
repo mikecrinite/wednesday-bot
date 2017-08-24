@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 import logging
 from discord.ext import commands
+from discord.ext.commands import Context
 from datetime import datetime
 import random
 import credentials  # Make your own credentials file
+import os
 
 description = """Is it Wednesday, my dudes?"""
 
 # The suggested logger setup from the discord.py documentation
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
-# Absolutely don't need this written to a log file, but keeping for future reference
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
@@ -37,26 +38,13 @@ def image(x):
     TODO: organize some meme folders, call from there instead, post direct images instead of links
     """
     return{
-        0: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Monday
-            ],
-        1: ["https://i.imgur.com/mfhfh7o.jpg",                                      # Tuesday
-            "http://i.imgur.com/zBviPIU.jpg",
-            "https://i.redd.it/89phh1bap9hz.jpg"
-            ],
-        2: ["http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",     # Wednesday MY DUDES!
-            "http://i0.kym-cdn.com/photos/images/original/001/118/749/887.jpg",
-            "http://i0.kym-cdn.com/photos/images/original/000/937/093/395.png",
-            "http://i0.kym-cdn.com/photos/images/original/001/091/264/665.jpg",
-            "http://i0.kym-cdn.com/photos/images/original/001/279/213/5ce.jpg"
-            ],
-        3: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Thursday
-            ],
-        4: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Friday
-            ],
-        5: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Saturday
-            ],
-        6: ["https://i.imgur.com/mfhfh7o.jpg"                                       # Sunday
-            ],
+        0: './monday/' + random.choice(os.listdir('./monday')),
+        1: './tuesday/' + random.choice(os.listdir('./tuesday')),
+        2: './wednesday/' + random.choice(os.listdir('./wednesday')),
+        3: './thursday/' + random.choice(os.listdir('./thursday')),
+        4: './friday/' + random.choice(os.listdir('./friday')),
+        5: './saturday/' + random.choice(os.listdir('./saturday')),
+        6: './sunday/' + random.choice(os.listdir('./sunday')),
     }[x]
 
 
@@ -69,11 +57,12 @@ async def on_ready():
     logger.info('-+-+-+-+-+-+-')
 
 
-@bot.command()
-async def day():
+@bot.command(pass_context=True)
+async def day(ctx):
+    channel = ctx.message.channel
     today = datetime.today().weekday()
     await bot.say(my_dudes(today))
-    await bot.say(random.choice(image(today)))
+    await bot.send_file(channel, image(today))
 
 
 bot.run(credentials.getCreds('token'))
