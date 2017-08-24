@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import logging
 from discord.ext import commands
 from datetime import datetime
