@@ -61,11 +61,11 @@ def image(x):
 
 @bot.event
 async def on_ready():
-    print('-+-+-+-+-+-+-')
-    print(bot.user.name)
-    print('is alive...')
-    print(bot.user.id)
-    print('-+-+-+-+-+-+-')
+    logger.info('-+-+-+-+-+-+-')
+    logger.info(bot.user.name)
+    logger.info('is alive...')
+    logger.info(bot.user.id)
+    logger.info('-+-+-+-+-+-+-')
 
 
 @bot.command()
