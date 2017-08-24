@@ -4,6 +4,10 @@ credentials.py
 # Don't add the log
 discord.log
 
+# idea stuff
 .idea/
 .idea/*
 *.idea/
+
+# python stuff
+__pycache__/
