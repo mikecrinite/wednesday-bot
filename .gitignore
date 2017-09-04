@@ -11,3 +11,6 @@ discord.log
 
 # python stuff
 __pycache__/
+
+# linux stuff
+nohup.out
