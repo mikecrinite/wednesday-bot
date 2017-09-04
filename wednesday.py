@@ -65,4 +65,4 @@ async def day(ctx):
     await bot.send_file(channel, image(today))
 
 
-bot.run(credentials.getCreds('token'))
+bot.run(credentials.get_creds('token'))
