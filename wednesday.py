@@ -17,6 +17,7 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 bot = commands.Bot(command_prefix='?', description=description)
+index = 0
 
 
 def my_dudes(n):
@@ -34,8 +35,6 @@ def my_dudes(n):
 def image(x):
     """
     Return a dank meme corresponding to how close to Wednesday it is, my dudes.
-
-    TODO: organize some meme folders, call from there instead, post direct images instead of links
     """
     return{
         0: './monday/' + random.choice(os.listdir('./monday')),
