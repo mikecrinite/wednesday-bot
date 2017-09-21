@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#kill process with previous wednesday-bot
+pid=$(ps -x | pgrep -f "[w]ednesday")
+echo "sleep, wednesday-bot"
+echo "killing process with pid: $pid"
+kill $pid
+echo "..."
+
+#pull latest from git
+echo "pulling latest from git:"
+git pull
+echo "..."
+
+#start updated wednesday-bot
+echo "awaken, wednesday-bot"
+./run
+
