@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pid=$(ps -x | pgrep -f "[w]ednesday")
+
+if [ -z "$pid" ]
+then
+    echo "no"
+else
+    echo "yes : $pid"
+fi
+
