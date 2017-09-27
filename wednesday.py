@@ -98,9 +98,7 @@ async def on_message(message):
         if 'lol' in message.clean_content.lower():
             await bot.add_reaction(message, '🍭')  # :lollipop:
         if 'shit' in message.clean_content.lower():
-            await bot.add_reaction(message, '💩') # :poop:
-        if 'wednesday' in message.clean.lower():
-            await bot.send_message(message.channel, 'O.O')  # TODO
+            await bot.add_reaction(message, '💩') # :poop
         if len(message.attachments) > 0:
             await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
