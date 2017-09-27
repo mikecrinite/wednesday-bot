@@ -47,6 +47,19 @@ def image(x):
     }[x]
 
 
+def thanked(message):
+    """
+    Try to determine if wednesday-bot was thanked in the previous message
+    :param message: Message to parse
+    :return: True if thanked
+    """
+    if 'no thanks' in message:
+        return False
+    elif 'thanks' in message:
+        return True
+    return False
+
+
 @bot.event
 async def on_ready():
     logger.info('-+-+-+-+-+-+-')
@@ -62,6 +75,29 @@ async def day(ctx):
     today = datetime.today().weekday()
     await bot.say(my_dudes(today))
     await bot.send_file(channel, image(today))
+
+@bot.event
+async def on_message(message):
+    if message.channel.is_private:
+        await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
+    if bot.user.mentioned_in(message) and message.mention_everyone is False:
+        if 'help' in message.content.lower():
+            await bot.send_message(message.channel, 'Check me out: github.com/mikecrinite/wednesday-bot')
+        elif thanked(message.content.lower()):
+            await bot.send_message(message.channel, 'You\'re welcome, my dudes')
+            await bot.add_reaction(message, '❤️')  # :heart:
+        elif 'fuck you' in message.content.lower():
+            await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
+            await bot.add_reaction(message, '😢')  # :cry:
+        else:
+            await bot.add_reaction(message, '👀')  # :eyes:
+    if 'lol' in message.clean_content.lower():
+        await bot.add_reaction(message, '🍭')  # :lollipop:
+    if 'shit' in message.clean_content.lower():
+        await bot.add_reaction(message, '💩') # :poop:
+    if len(message.attachments) > 0:
+        await bot.send_message(message.channel, "I don't accept tips, my guys.")
+    await bot.process_commands(message)
 
 
 bot.run(credentials.get_creds('token'))
