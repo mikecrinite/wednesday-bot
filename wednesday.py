@@ -13,7 +13,7 @@ description = """Is it Wednesday, my dudes?"""
 logger = logging.getLogger('discord')
 logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-handler.setFormatter(logging.Formatter('[%(levelname)] %(asctime)s:%(name)s: %(message)s'))
+handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
 bot = commands.Bot(command_prefix='?', description=description)
@@ -78,14 +78,15 @@ async def day(ctx):
 
 @bot.event
 async def on_message(message):
-    if message.channel.is_private:
+    if message.channel.is_private and not message.author.id == bot.user.id:
         await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
     if bot.user.mentioned_in(message) and message.mention_everyone is False:
         if 'help' in message.content.lower():
             await bot.send_message(message.channel, 'Check me out: github.com/mikecrinite/wednesday-bot')
+            return
         elif thanked(message.content.lower()):
             await bot.send_message(message.channel, 'You\'re welcome, my dudes')
-            await bot.add_reaction(message, '❤️')  # :heart:
+            await bot.add_reaction(message, ':heart:')  # :heart:
         elif 'fuck you' in message.content.lower():
             await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
             await bot.add_reaction(message, '😢')  # :cry:
@@ -97,7 +98,9 @@ async def on_message(message):
         await bot.add_reaction(message, '💩') # :poop:
     if len(message.attachments) > 0:
         await bot.send_message(message.channel, "I don't accept tips, my guys.")
+        return
     await bot.process_commands(message)
 
 
-bot.run(credentials.get_creds('token'))
+bot.run(credentials.get_creds('token')
+        )
