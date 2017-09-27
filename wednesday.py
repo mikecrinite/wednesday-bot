@@ -49,13 +49,14 @@ def image(x):
 
 def thanked(message):
     """
-    Try to determine if wednesday-bot was thanked in the previous message
+    Try to determine if wednesday-bot was thanked in the previous message.
+    Obviously at this point it is a very cursory check.
     :param message: Message to parse
     :return: True if thanked
     """
-    if 'no thanks' in message:
+    if 'no thanks' in message or 'for nothing' in message:
         return False
-    elif 'thanks' in message:
+    elif 'thank' in message:
         return True
     return False
 
@@ -78,27 +79,30 @@ async def day(ctx):
 
 @bot.event
 async def on_message(message):
-    if message.channel.is_private and not message.author.id == bot.user.id:
-        await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
-    if bot.user.mentioned_in(message) and message.mention_everyone is False:
-        if 'help' in message.content.lower():
-            await bot.send_message(message.channel, 'Check me out: github.com/mikecrinite/wednesday-bot')
+    if not message.author.id == bot.user.id:  # don't reply to your own messages
+        if message.channel.is_private:
+            await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
+        if bot.user.mentioned_in(message) and message.mention_everyone is False:
+            if 'help' in message.content.lower():
+                await bot.send_message(message.channel, 'Check me out: https://github.com/mikecrinite/wednesday-bot')
+                return
+            elif thanked(message.content.lower()):
+                await bot.send_message(message.channel, 'You\'re welcome, my dudes')
+                await bot.add_reaction(message, ':heart:')  # :heart: TODO
+            elif 'fuck you' in message.content.lower():
+                await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
+                await bot.add_reaction(message, '😢')  # :cry:
+            else:
+                await bot.add_reaction(message, '👀')  # :eyes:
+        if 'lol' in message.clean_content.lower():
+            await bot.add_reaction(message, '🍭')  # :lollipop:
+        if 'shit' in message.clean_content.lower():
+            await bot.add_reaction(message, '💩') # :poop:
+        if 'wednesday' in message.clean.lower():
+            await bot.send_message(message.channel, 'O.O')
+        if len(message.attachments) > 0:
+            await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
-        elif thanked(message.content.lower()):
-            await bot.send_message(message.channel, 'You\'re welcome, my dudes')
-            await bot.add_reaction(message, ':heart:')  # :heart:
-        elif 'fuck you' in message.content.lower():
-            await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
-            await bot.add_reaction(message, '😢')  # :cry:
-        else:
-            await bot.add_reaction(message, '👀')  # :eyes:
-    if 'lol' in message.clean_content.lower():
-        await bot.add_reaction(message, '🍭')  # :lollipop:
-    if 'shit' in message.clean_content.lower():
-        await bot.add_reaction(message, '💩') # :poop:
-    if not message.author.id == bot.user.id and len(message.attachments) > 0:
-        await bot.send_message(message.channel, "I don't accept tips, my guys.")
-        return
     await bot.process_commands(message)
 
 
