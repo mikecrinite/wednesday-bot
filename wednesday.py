@@ -17,7 +17,7 @@ handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)
 logger.addHandler(handler)
 
 bot = commands.Bot(command_prefix='?', description=description)
-index = 0
+index = 0  # TODO
 
 
 def my_dudes(n):
@@ -77,6 +77,7 @@ async def day(ctx):
     await bot.say(my_dudes(today))
     await bot.send_file(channel, image(today))
 
+
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
@@ -99,12 +100,11 @@ async def on_message(message):
         if 'shit' in message.clean_content.lower():
             await bot.add_reaction(message, '💩') # :poop:
         if 'wednesday' in message.clean.lower():
-            await bot.send_message(message.channel, 'O.O')
+            await bot.send_message(message.channel, 'O.O')  # TODO
         if len(message.attachments) > 0:
             await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
     await bot.process_commands(message)
 
 
-bot.run(credentials.get_creds('token')
-        )
+bot.run(credentials.get_creds('token'))
