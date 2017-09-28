@@ -6,6 +6,7 @@ from datetime import datetime
 import random
 import credentials  # Make your own credentials file
 import os
+import _pickle
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -21,6 +22,7 @@ bot = commands.Bot(command_prefix='?', description=description)
 index = 0  # TODO
 
 dudes = []  # List of dudes
+pickle_path = './persistent/dudes.pk'
 
 
 def my_dudes(n):
@@ -66,8 +68,8 @@ def thanked(message):
 
 def dudify(uid):
     dudes.append(uid)
-
-    return
+    with open(pickle_path, 'wb') as f:
+        _pickle.dump(dudes, f)
 
 
 @bot.event
@@ -99,7 +101,7 @@ async def on_message(message):
                 return
             elif thanked(message.content.lower()):
                 await bot.send_message(message.channel, 'You\'re welcome, my dudes')
-                await bot.add_reaction(message, ':heart:')  # :heart: TODO
+                await bot.add_reaction(message, '❤')  # :heart:
             elif 'fuck you' in message.content.lower():
                 await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
                 await bot.add_reaction(message, '😢')  # :cry:
@@ -114,5 +116,6 @@ async def on_message(message):
             return
     await bot.process_commands(message)
 
-
+with open(pickle_path, 'rb') as f:
+    dudes = _pickle.load(f)
 bot.run(credentials.get_creds('token'))
