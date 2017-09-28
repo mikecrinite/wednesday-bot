@@ -16,8 +16,11 @@ handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w'
 handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
+# Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
 index = 0  # TODO
+
+dudes = []  # List of dudes
 
 
 def my_dudes(n):
@@ -61,6 +64,12 @@ def thanked(message):
     return False
 
 
+def dudify(uid):
+    dudes.append(uid)
+
+    return
+
+
 @bot.event
 async def on_ready():
     logger.info('-+-+-+-+-+-+-')
@@ -82,6 +91,7 @@ async def day(ctx):
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if message.channel.is_private:
+            dudify(message.author.id)
             await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
         if bot.user.mentioned_in(message) and message.mention_everyone is False:
             if 'help' in message.content.lower():
