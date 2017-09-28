@@ -116,6 +116,9 @@ async def on_message(message):
             return
     await bot.process_commands(message)
 
-with open(pickle_path, 'rb') as f:
-    dudes = _pickle.load(f)
+try:
+    with open(pickle_path, 'rb') as f:
+        dudes = _pickle.load(f)
+except EOFError:
+    logger.warning("pickle.load failed")
 bot.run(credentials.get_creds('token'))
