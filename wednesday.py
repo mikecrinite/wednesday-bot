@@ -99,6 +99,7 @@ async def on_message(message):
         if message.channel.is_private:
             if not is_dude(message.author.id):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
+                await bot.send_message(message.channel, ':wink:')
         if bot.user.mentioned_in(message) and message.mention_everyone is False:
             if 'help' in message.content.lower():
                 await bot.send_message(message.channel, 'Check me out: https://github.com/mikecrinite/wednesday-bot')
