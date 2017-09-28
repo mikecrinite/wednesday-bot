@@ -100,7 +100,7 @@ async def on_message(message):
                 await bot.send_message(message.channel, 'Check me out: https://github.com/mikecrinite/wednesday-bot')
                 return
             elif thanked(message.content.lower()):
-                await bot.send_message(message.channel, 'You\'re welcome, my dudes')
+                await bot.send_message(message.channel, 'You\'re welcome, my dude')
                 await bot.add_reaction(message, '❤')  # :heart:
             elif 'fuck you' in message.content.lower():
                 await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
