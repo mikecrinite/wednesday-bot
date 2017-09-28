@@ -4,15 +4,24 @@
 pid=$(ps -x | pgrep -f "[w]ednesday")
 echo "sleep, wednesday-bot"
 echo "killing process with pid: $pid"
-kill $pid
+if [ -n $pid ]; then
+    kill $pid
+else
+    echo "wednesday-bot was not running"
+fi
 echo "..."
 
 #pull latest from git
 echo "pulling latest from git:"
 git pull
 echo "..."
+sleep 1
 
 #start updated wednesday-bot
 echo "awaken, wednesday-bot"
 ./run
+
+#make sure he's alive
+echo "Alive?"
+./alive
 
