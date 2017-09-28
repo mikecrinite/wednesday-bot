@@ -66,10 +66,14 @@ def thanked(message):
     return False
 
 
-def dudify(uid):
-    dudes.append(uid)
-    with open(pickle_path, 'wb') as f:
-        _pickle.dump(dudes, f)
+def is_dude(uid):
+    if uid in dudes:
+        return True  # was already a dude
+    else:
+        dudes.append(uid)
+        with open(pickle_path, 'wb') as f:
+            _pickle.dump(dudes, f)
+        return False  # is now a dude
 
 
 @bot.event
@@ -93,8 +97,8 @@ async def day(ctx):
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if message.channel.is_private:
-            dudify(message.author.id)
-            await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
+            if not is_dude(message.author.id):
+                await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
         if bot.user.mentioned_in(message) and message.mention_everyone is False:
             if 'help' in message.content.lower():
                 await bot.send_message(message.channel, 'Check me out: https://github.com/mikecrinite/wednesday-bot')
@@ -116,6 +120,7 @@ async def on_message(message):
             return
     await bot.process_commands(message)
 
+# If script is starting, we need to load dudes
 try:
     with open(pickle_path, 'rb') as f:
         dudes = _pickle.load(f)
