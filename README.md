@@ -1,7 +1,7 @@
 # wednesday-bot
 ## Is it Wednesday, my dudes?
 
-### Function(s):
+### Command(s):
 
 - ?day : wednesday-bot will tell you what day it is and provide a helpful visual aid, should you continue to be confused but just don't want to admit it. Often, on days other than Wednesday, the visual aid will simply alert you that it is in fact not Wednesday, which is really the only important thing you need to know.
 
