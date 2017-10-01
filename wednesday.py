@@ -29,7 +29,7 @@ def my_dudes(n):
     return {
         0: "it is monday, my dudes",
         1: "it is tuesday, my dudes",
-        2: "/tts IT IS WEDNESDAY, MY DUDES",
+        2: "IT IS WEDNESDAY, MY DUDES",
         3: "it is thursday, my dudes...",
         4: "it is friday, my dudes",
         5: "it is saturday, my dudes",
@@ -79,10 +79,10 @@ def is_dude(uid):
 @bot.event
 async def on_ready():
     logger.info('-+-+-+-+-+-+-')
-    logger.info('-+-+-+-+-+-+-')
     logger.info(bot.user.name)
     logger.info('is alive...')
     logger.info(bot.user.id)
+    logger.info('-+-+-+-+-+-+-')
 
 
 @bot.command(pass_context=True)
