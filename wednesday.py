@@ -7,7 +7,7 @@ import random
 import credentials  # Make your own credentials file
 import os
 import _pickle
-from urllib.parse import urlparse
+import requests
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -97,10 +97,10 @@ def is_dude(uid):
 
 
 def url_is_valid(url):
-    o = urlparse(url)
-    if "http" not in o.scheme:
-        return False
-    return True
+    o = requests.head(url)
+    if o.status_code == requests.codes.ok:
+        return True
+    return False
 
 
 @bot.event
@@ -137,6 +137,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     image_url = "?alt=" + image_url
 
     final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
+    requests.head(final_url)  # Make the website generate the image
     await bot.send_message(channel, mention + " " + final_url)
 
 
