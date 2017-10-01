@@ -73,14 +73,14 @@ def prepare_for_memegen(text):
     memegen requires reserved characters to be escaped using
     the replacements below
     """
-    text.replace("-", "--")
-    text.replace("_", "__")
-    text.replace(" ", "_")
-    text.replace("?", "~q")
-    text.replace("%", "~p")
-    text.replace("#", "~h")
-    text.replace("/", "~s")
-    text.replace("\"", "\'\'")
+    text = text.replace("-", "--")
+    text = text.replace("_", "__")
+    text = text.replace(" ", "_")
+    text = text.replace("?", "~q")
+    text = text.replace("%", "~p")
+    text = text.replace("#", "~h")
+    text = text.replace("/", "~s")
+    text = text.replace("\"", "\'\'")
 
     return text
 
@@ -122,7 +122,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     base_url = "https://memegen.link/custom/"
     image_url = "?alt=" + image_url
 
-    final_url = base_url + top_text + "/" + bottom_text + "/" + image_url
+    final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
     await bot.send_message(channel, mention + " " + final_url)
 
 
