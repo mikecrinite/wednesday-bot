@@ -114,6 +114,11 @@ async def day(ctx):
 
 @bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
+    args = locals()
+    if len(args) != 4:
+        await bot.send_message("You accidentally entered too many arguments. Or did it on purpose?"
+                               "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```")
+        return
     mention = '<@' + ctx.message.author.id + '>'
     channel = ctx.message.channel
     top_text = prepare_for_memegen(top_text)
