@@ -66,6 +66,25 @@ def thanked(message):
     return False
 
 
+def prepare_for_memegen(text):
+    """
+    see https://memegen.link
+
+    memegen requires reserved characters to be escaped using
+    the replacements below
+    """
+    text.replace("-", "--")
+    text.replace("_", "__")
+    text.replace(" ", "_")
+    text.replace("?", "~q")
+    text.replace("%", "~p")
+    text.replace("#", "~h")
+    text.replace("/", "~s")
+    text.replace("\"", "\'\'")
+
+    return text
+
+
 def is_dude(uid):
     if uid in dudes:
         return True  # was already a dude
@@ -91,6 +110,20 @@ async def day(ctx):
     today = datetime.today().weekday()
     await bot.say(my_dudes(today))
     await bot.send_file(channel, image(today))
+
+
+@bot.command(pass_context=True)
+async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
+    mention = '<@' + ctx.message.author.id + '>'
+    channel = ctx.message.channel
+    top_text = prepare_for_memegen(top_text)
+    bottom_text = prepare_for_memegen(bottom_text)
+
+    base_url = "https://memegen.link/custom/"
+    image_url = "?alt=" + image_url
+
+    final_url = base_url + top_text + "/" + bottom_text + "/" + image_url
+    await bot.send_message(channel, mention + " " + final_url)
 
 
 @bot.event
