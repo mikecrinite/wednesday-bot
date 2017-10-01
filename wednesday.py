@@ -110,8 +110,6 @@ async def on_message(message):
             elif 'fuck you' in message.content.lower():
                 await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
                 await bot.add_reaction(message, '😢')  # :cry:
-            elif 'for the glory of allah' in message.clean_content.lower():
-                await bot.send_message(message.channel, "💣💣💣💣💣💣💣💣💣💣💣💣")
             elif 'diabetes' in message.clean_content.lower():
                 await bot.send_message(message.channel, "Thankfully, frogs don't get diabetes.")
             else:
