@@ -110,12 +110,16 @@ async def on_message(message):
             elif 'fuck you' in message.content.lower():
                 await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
                 await bot.add_reaction(message, '😢')  # :cry:
+            elif 'diabetes' in message.clean_content.lower():
+                await bot.send_message(message.channel, "Thankfully, frogs don't get diabetes.")
+            elif 'bonzi' in message.clean_content.lower():
+                await bot.send_message(message.channel, "#fuckbonzi")
             else:
                 await bot.add_reaction(message, '👀')  # :eyes:
         if 'lol' in message.clean_content.lower():
             await bot.add_reaction(message, '🍭')  # :lollipop:
         if 'shit' in message.clean_content.lower():
-            await bot.add_reaction(message, '💩') # :poop
+            await bot.add_reaction(message, '💩')  # :poop
         if len(message.attachments) > 0:
             await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
