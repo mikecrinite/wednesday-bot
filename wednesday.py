@@ -7,6 +7,7 @@ import random
 import credentials  # Make your own credentials file
 import os
 import _pickle
+from urllib.parse import urlparse
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -95,6 +96,13 @@ def is_dude(uid):
         return False  # is now a dude
 
 
+def url_is_valid(url):
+    o = urlparse(url)
+    if "http" not in o.scheme:
+        return False
+    return True
+
+
 @bot.event
 async def on_ready():
     logger.info('-+-+-+-+-+-+-')
@@ -114,10 +122,11 @@ async def day(ctx):
 
 @bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
-    args = locals()
-    if len(args) != 4:
-        await bot.send_message("You accidentally entered too many arguments. Or did it on purpose?"
-                               "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```")
+    if not url_is_valid(image_url):
+        await bot.send_message("You accidentally entered too many arguments. Or maybe even did it on purpose..."
+                               "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```"
+                               "```A url must begin with http. Text must be in quotes.```"
+                               "If you think you got this message in error, I'm sorry to hear that")
         return
     mention = '<@' + ctx.message.author.id + '>'
     channel = ctx.message.channel
@@ -153,7 +162,7 @@ async def on_message(message):
         if 'lol' in message.clean_content.lower():
             await bot.add_reaction(message, '🍭')  # :lollipop:
         if 'shit' in message.clean_content.lower():
-            await bot.add_reaction(message, '💩') # :poop
+            await bot.add_reaction(message, '💩')  # :poop
         if len(message.attachments) > 0:
             await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
