@@ -7,6 +7,7 @@ import random
 import credentials  # Make your own credentials file
 import os
 import _pickle
+import requests
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -66,6 +67,25 @@ def thanked(message):
     return False
 
 
+def prepare_for_memegen(text):
+    """
+    see https://memegen.link
+
+    memegen requires reserved characters to be escaped using
+    the replacements below
+    """
+    text = text.replace("-", "--")
+    text = text.replace("_", "__")
+    text = text.replace(" ", "_")
+    text = text.replace("?", "~q")
+    text = text.replace("%", "~p")
+    text = text.replace("#", "~h")
+    text = text.replace("/", "~s")
+    text = text.replace("\"", "\'\'")
+
+    return text
+
+
 def is_dude(uid):
     if uid in dudes:
         return True  # was already a dude
@@ -74,6 +94,13 @@ def is_dude(uid):
         with open(pickle_path, 'wb') as f:
             _pickle.dump(dudes, f)
         return False  # is now a dude
+
+
+def url_is_valid(url):
+    o = requests.head(url)
+    if o.status_code == requests.codes.ok:
+        return True
+    return False
 
 
 @bot.event
@@ -91,6 +118,27 @@ async def day(ctx):
     today = datetime.today().weekday()
     await bot.say(my_dudes(today))
     await bot.send_file(channel, image(today))
+
+
+@bot.command(pass_context=True)
+async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
+    if not url_is_valid(image_url):
+        await bot.send_message("You accidentally entered too many arguments. Or maybe even did it on purpose..."
+                               "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```"
+                               "```A url must begin with http. Text must be in quotes.```"
+                               "If you think you got this message in error, I'm sorry to hear that")
+        return
+    mention = '<@' + ctx.message.author.id + '>'
+    channel = ctx.message.channel
+    top_text = prepare_for_memegen(top_text)
+    bottom_text = prepare_for_memegen(bottom_text)
+
+    base_url = "https://memegen.link/custom/"
+    image_url = "?alt=" + image_url
+
+    final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
+    requests.head(final_url)  # Make the website generate the image
+    await bot.send_message(channel, mention + " " + final_url)
 
 
 @bot.event
