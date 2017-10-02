@@ -23,7 +23,7 @@ bot = commands.Bot(command_prefix='?', description=description)
 index = 0  # TODO
 
 dudes = []  # List of dudes
-pickle_path = './persistent/dudes.pk'
+pickle_path = './persistence/dudes.pk'
 
 
 def my_dudes(n):
