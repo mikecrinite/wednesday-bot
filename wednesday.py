@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import logging
 from discord.ext import commands
-from discord.ext.commands import Context
+from discord.ext.commands import Context, MissingRequiredArgument
 from datetime import datetime
 import random
 import credentials  # Make your own credentials file
@@ -98,8 +98,10 @@ def is_dude(uid):
 
 def url_is_valid(url):
     o = requests.head(url)
+    logger.info(o)
     if o.status_code == requests.codes.ok:
         return True
+    logger.warn("url " + url + " did not respond with a 200")
     return False
 
 
@@ -122,23 +124,30 @@ async def day(ctx):
 
 @bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
-    if not url_is_valid(image_url):
-        await bot.send_message("You accidentally entered too many arguments. Or maybe even did it on purpose..."
-                               "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```"
-                               "```A url must begin with http. Text must be in quotes.```"
-                               "If you think you got this message in error, I'm sorry to hear that")
-        return
-    mention = '<@' + ctx.message.author.id + '>'
-    channel = ctx.message.channel
-    top_text = prepare_for_memegen(top_text)
-    bottom_text = prepare_for_memegen(bottom_text)
+    try:
+        if not url_is_valid(image_url):
+            await bot.send_message(ctx.message.channel, "You accidentally entered too many arguments. Or maybe even did it on purpose..."
+                                   "```?meme \"top text goes in quotes\" \"same with bottom\" paste.url.verbatim```"
+                                   "```A url must begin with http. Text must be in quotes.```"
+                                   "If you think you got this message in error, I'm sorry to hear that")
+            return
+        mention = '<@' + ctx.message.author.id + '>'
+        channel = ctx.message.channel
+        top_text = prepare_for_memegen(top_text)
+        bottom_text = prepare_for_memegen(bottom_text)
 
-    base_url = "https://memegen.link/custom/"
-    image_url = "?alt=" + image_url
+        base_url = "https://memegen.link/custom/"
+        image_url = "?alt=" + image_url
 
-    final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
-    requests.head(final_url)  # Make the website generate the image
-    await bot.send_message(channel, mention + " " + final_url)
+        final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
+        o = requests.head(final_url)  # Make the website generate the image
+        logger.info(o)
+        await bot.send_message(channel, mention + " " + final_url)
+    except MissingRequiredArgument:
+        await bot.send_message(ctx.message.channel, "You must input:"
+                                                    "```\"Top text\""
+                                                    "\"Bottom text\""
+                                                    "\"image_url\"")
 
 
 @bot.event
