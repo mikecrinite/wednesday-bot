@@ -43,13 +43,13 @@ def image(x):
     Return a dank meme corresponding to how close to Wednesday it is, my dudes.
     """
     return{
-        0: './monday/' + random.choice(os.listdir('./monday')),
-        1: './tuesday/' + random.choice(os.listdir('./tuesday')),
-        2: './wednesday/' + random.choice(os.listdir('./wednesday')),
-        3: './thursday/' + random.choice(os.listdir('./thursday')),
-        4: './friday/' + random.choice(os.listdir('./friday')),
-        5: './saturday/' + random.choice(os.listdir('./saturday')),
-        6: './sunday/' + random.choice(os.listdir('./sunday')),
+        0: 'memes/monday/' + random.choice(os.listdir('memes/monday')),
+        1: 'memes/tuesday/' + random.choice(os.listdir('memes/tuesday')),
+        2: 'memes/wednesday/' + random.choice(os.listdir('memes/wednesday')),
+        3: 'memes/thursday/' + random.choice(os.listdir('memes/thursday')),
+        4: 'memes/friday/' + random.choice(os.listdir('memes/friday')),
+        5: 'memes/saturday/' + random.choice(os.listdir('memes/saturday')),
+        6: 'memes/sunday/' + random.choice(os.listdir('memes/sunday')),
     }[x]
 
 
