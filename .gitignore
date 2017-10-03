@@ -2,8 +2,12 @@
 credentials.py
 
 # Don't add the logs
+logs/*
 discord.log
 wednesday.log
+wednesday*.log
+wb_err.log
+wb_err*.log
 
 # idea stuff
 .idea/
