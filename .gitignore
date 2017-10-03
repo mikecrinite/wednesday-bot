@@ -1,8 +1,9 @@
 # Don't add your credentials
 credentials.py
 
-# Don't add the log
+# Don't add the logs
 discord.log
+wednesday.log
 
 # idea stuff
 .idea/

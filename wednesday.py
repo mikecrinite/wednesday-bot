@@ -14,9 +14,11 @@ description = """Is it Wednesday, my dudes?"""
 # The suggested logger setup from the discord.py documentation
 logger = logging.getLogger('wednesday')
 logger.setLevel(logging.DEBUG)
+loggerd = logging.getLogger('discord')
 handler = logging.FileHandler(filename='wednesday.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
+loggerd.addHandler(handler)
 
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
@@ -101,6 +103,7 @@ async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
         # For now, this MUST be in meme()
         # TODO: add a help and change this message
+        logger.error(ctx.message + "did not have enough arguments")
         await bot.send_message(ctx.message.channel, "You must input:"
                                                     "```\"Top text\""
                                                     "\"Bottom text\""
