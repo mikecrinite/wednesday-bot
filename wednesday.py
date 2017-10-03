@@ -43,6 +43,7 @@ async def day(ctx):
 
 @bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
+    logger.info(ctx.message.author + " requested : " + top_text + " " + bottom_text + " " + image_url)
     if not util.url_is_valid(image_url):
         await bot.send_message(ctx.message.channel,
                                "You accidentally entered too many arguments. Or maybe even did it on purpose..."
@@ -60,7 +61,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
 
     final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
     o = requests.head(final_url)  # Make the website generate the image
-    logger.info(o)
+    logger.info(final_url + " responded : " + o)
     await bot.send_message(channel, mention + " " + final_url)
 
 
@@ -103,7 +104,7 @@ async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
         # For now, this MUST be in meme()
         # TODO: add a help and change this message
-        logger.error(ctx.message + "did not have enough arguments")
+        logger.error(ctx.message + " : not enough arguments")
         await bot.send_message(ctx.message.channel, "You must input:"
                                                     "```\"Top text\""
                                                     "\"Bottom text\""
