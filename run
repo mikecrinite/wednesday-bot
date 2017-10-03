@@ -1,6 +1,22 @@
 #!/bin/bash
 
-nohup python3 wednesday.py &
-sleep 1
-echo ''
+# Move wednesday-log if it exists
+date=$(date +"%Y%m%d%H%M")
+if [ -f logs/wednesday.log ]; then
+    mv logs/wednesday.log logs/wednesday_${date}.log
+fi
 
+if [ -f logs/wb_err.log ]; then
+    mv logs/wb_err.log logs/wb_err_${date}.log
+fi
+
+# Run wednesday-bot in background.
+# Redirect error output to /logs/errors
+nohup python3 wednesday.py > logs/wb_err.log 2>&1&
+sleep 1
+echo '
+'
+
+#make sure he's alive
+echo "Alive?"
+./alive

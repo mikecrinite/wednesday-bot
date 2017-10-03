@@ -2,8 +2,7 @@
 
 pid=$(ps -x | pgrep -f "[w]ednesday")
 
-if [ -z "$pid" ]
-then
+if [ -z "$pid" ]; then
     echo "no"
 else
     echo "yes : $pid"
