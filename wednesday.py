@@ -66,7 +66,6 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     await bot.send_message(channel, mention + " " + final_url)
 
 
-
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
