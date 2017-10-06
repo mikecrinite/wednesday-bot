@@ -8,6 +8,7 @@ import requests
 import credentials  # Make your own credentials file
 from persistence import persistence
 from util import util
+from util import content_mapping as cm
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -24,6 +25,22 @@ loggerd.addHandler(handler)
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
 
+
+async def respond_to(message, responses, mentioned):
+    channel = message.channel
+    for a in responses:
+        response = a[0]
+        reaction = a[1]
+        if reaction != '':
+            await bot.add_reaction(message, reaction)
+            logger.debug(reaction)
+        if response != '':
+            await bot.send_message(channel, response)
+            logger.debug(response)
+        if a[2]:  # Stop processing results
+            return
+    if len(responses) == 0 and mentioned:
+        await bot.add_reaction(message, '👀')  # :eyes:
 
 @bot.event
 async def on_ready():
@@ -66,7 +83,6 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     await bot.send_message(channel, mention + " " + final_url)
 
 
-
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
@@ -75,25 +91,13 @@ async def on_message(message):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
                 await bot.send_message(message.channel, ':wink:')
         if bot.user.mentioned_in(message) and message.mention_everyone is False:
-            if 'help' in message.content.lower():
-                await bot.send_message(message.channel, 'Check me out: https://github.com/mikecrinite/wednesday-bot')
-                return
-            elif util.thanked(message.content.lower()):
+            if util.thanked(message.content.lower()):
                 await bot.send_message(message.channel, 'You\'re welcome, my dude')
                 await bot.add_reaction(message, '❤')  # :heart:
-            elif 'fuck you' in message.content.lower():
-                await bot.send_message(message.channel, 'I\'m sorry you feel that way, my guy')
-                await bot.add_reaction(message, '😢')  # :cry:
-            elif 'diabetes' in message.clean_content.lower():
-                await bot.send_message(message.channel, "Thankfully, frogs don't get diabetes.")
-            elif 'bonzi' in message.clean_content.lower():
-                await bot.send_message(message.channel, "#fuckbonzi")
-            else:
-                await bot.add_reaction(message, '👀')  # :eyes:
-        if 'lol' in message.clean_content.lower():
-            await bot.add_reaction(message, '🍭')  # :lollipop:
-        if 'shit' in message.clean_content.lower():
-            await bot.add_reaction(message, '💩')  # :poop
+                return
+            await respond_to(message, cm.mentioned_in(message.content.lower()), True)
+            return
+        await respond_to(message, cm.listen_to(message.content.lower()), False)
         if len(message.attachments) > 0:
             logger.info(message.author + " sent " + message.attachments + " attachments.")
             return
@@ -111,6 +115,10 @@ async def on_command_error(error, ctx):
                                                     "\"Bottom text\""
                                                     "\"image_url\"")
 
-# If script is starting, we need to load dudes
-persistence.load_dudes()
-bot.run(credentials.get_creds('token'))
+
+if __name__ == "__main__":
+    # If script is starting, we need to load dudes
+    persistence.load_dudes()
+
+    # This MUST be the final function call that runs
+    bot.run(credentials.get_creds('token'))
