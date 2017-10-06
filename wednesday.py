@@ -14,9 +14,9 @@ description = """Is it Wednesday, my dudes?"""
 
 # The suggested logger setup from the discord.py documentation
 logger = logging.getLogger('wednesday')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 loggerd = logging.getLogger('discord')
-loggerd.setLevel(logging.DEBUG)
+loggerd.setLevel(logging.INFO)
 handler = logging.FileHandler(filename='logs/wednesday.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
