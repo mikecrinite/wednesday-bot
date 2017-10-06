@@ -8,6 +8,7 @@ import requests
 import credentials  # Make your own credentials file
 from persistence import persistence
 from util import util
+from util import content_mapping as cm
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -24,6 +25,16 @@ loggerd.addHandler(handler)
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
 
+
+async def respond_to(message, responses):
+    channel = message.channel
+    for a in responses:
+        response = a[0]
+        reaction = a[1]
+        if reaction != '':
+            await bot.add_reaction(message, reaction)
+        if response != '':
+            await bot.send_message(channel, response)
 
 @bot.event
 async def on_ready():
@@ -89,10 +100,7 @@ async def on_message(message):
                 await bot.send_message(message.channel, "#fuckbonzi")
             else:
                 await bot.add_reaction(message, '👀')  # :eyes:
-        if 'lol' in message.clean_content.lower():
-            await bot.add_reaction(message, '🍭')  # :lollipop:
-        if 'shit' in message.clean_content.lower():
-            await bot.add_reaction(message, '💩')  # :poop
+        respond_to(message, cm.listen_to(message.content.lower()))
         if len(message.attachments) > 0:
             await bot.send_message(message.channel, "I don't accept tips, my guys.")
             return
