@@ -29,14 +29,10 @@ bot = commands.Bot(command_prefix='?', description=description)
 async def respond_to(message, responses, mentioned):
     channel = message.channel
     for a in responses:
-        response = a[0]
-        reaction = a[1]
-        if reaction != '':
-            await bot.add_reaction(message, reaction)
-            logger.debug(reaction)
-        if response != '':
-            await bot.send_message(channel, response)
-            logger.debug(response)
+        if a[1] != '':
+            await bot.add_reaction(message, a[1])
+        if a[0] != '':
+            await bot.send_message(channel, a[0])
         if a[2]:  # Stop processing results
             return
     if len(responses) == 0 and mentioned:
