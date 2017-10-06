@@ -95,7 +95,7 @@ async def on_message(message):
         if 'shit' in message.clean_content.lower():
             await bot.add_reaction(message, '💩')  # :poop
         if len(message.attachments) > 0:
-            await bot.send_message(message.channel, "I don't accept tips, my guys.")
+            logger.info(message.author + " sent " + message.attachments + " attachments.")
             return
     await bot.process_commands(message)
 
