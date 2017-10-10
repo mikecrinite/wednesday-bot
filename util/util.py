@@ -78,9 +78,13 @@ def url_is_valid(url):
     :param url: Address to check
     :return: True if url returns 200
     """
-    o = requests.head(url)
-    if o.status_code == requests.codes.ok:
-        util_logger.info(url + " responded with 200")
-        return True
-    util_logger.warning("url " + url + " did not respond with a 200")
+    try:
+        o = requests.head(url, allow_redirects=True)
+        if o.status_code == requests.codes.ok:
+            util_logger.info(url + " responded with 200")
+            return True
+        else:
+            return False
+    except Exception:
+        util_logger.warning("url " + url + " did not respond with a 200")
     return False
