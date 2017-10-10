@@ -5,6 +5,7 @@ dudes = []  # list of dudes
 pickle_path = './persistence/dudes.pk'
 
 prs_logger = logging.getLogger("wednesday.persistence")
+prs_logger.setLevel(logging.INFO)
 
 
 def load_dudes():

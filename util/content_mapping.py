@@ -1,3 +1,4 @@
+import logging
 
 # { keyword : [reply, reaction, stop_processing?] }
 """
@@ -27,6 +28,9 @@ mention_mappings = {
     'diabetes': ['Thankfully, frogs don\'t get diabetes.', '', False],
     'bonzi': ['#fuckbonzi', '🅱', False]
 }
+
+cm_logger = logging.getLogger('wednesday.content_mapping')
+cm_logger.setLevel(logging.INFO)
 
 
 def listen_to(message):

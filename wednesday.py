@@ -12,15 +12,22 @@ from util import content_mapping as cm
 
 description = """Is it Wednesday, my dudes?"""
 
-# The suggested logger setup from the discord.py documentation
+# Set up logger for this class and discord
 logger = logging.getLogger('wednesday')
 logger.setLevel(logging.INFO)
 loggerd = logging.getLogger('discord')
 loggerd.setLevel(logging.INFO)
+
+# Set up file handler
 handler = logging.FileHandler(filename='logs/wednesday.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('[weds] %(levelname)s %(asctime)s:%(name)s: %(message)s'))
+
+# Add file handler to loggers
 logger.addHandler(handler)
 loggerd.addHandler(handler)
+persistence.prs_logger.addHandler(handler)
+util.util_logger.addHandler(handler)
+cm.cm_logger.addHandler(handler)
 
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)

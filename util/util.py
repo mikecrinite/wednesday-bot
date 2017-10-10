@@ -4,6 +4,7 @@ import requests
 import logging
 
 util_logger = logging.getLogger('wednesday.util')
+util_logger.setLevel(logging.INFO)
 
 
 def my_dudes(n):
