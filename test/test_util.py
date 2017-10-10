@@ -24,7 +24,7 @@ class TestUtilMethods(unittest.TestCase):
     def test_url_is_valid(self):
         self.assertTrue(util.url_is_valid('https://www.google.com'))  # 200
         self.assertTrue(util.url_is_valid('https://google.com'))      # 301
-        self.assertFalse(util.url_is_valid('http://google.com'))      # insecure connections
+        self.assertTrue(util.url_is_valid('http://google.com'))      # insecure connections
         self.assertFalse(util.url_is_valid('https://google'))         # 404
         self.assertFalse(util.url_is_valid('https://notaurl'))
 
