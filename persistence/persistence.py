@@ -31,7 +31,24 @@ def is_dude(uid):
         return True  # was already a dude
     else:
         dudes.append(uid)
-        with open(pickle_path, 'wb') as f:
-            _pickle.dump(dudes, f)
-        prs_logger.info("Added " + uid + " to dudes.pk")
+        dump()
+        prs_logger.info("Added " + str(uid) + " to dudes.pk")
         return False  # is now a dude
+
+
+def un_dude(uid):
+    """
+    removes a dude
+    :param uid: no longer our dude
+    """
+    if uid in dudes:
+        dudes.remove(uid)
+        prs_logger.info("Removed " + str(uid) + " from dudes.pk")
+    else:
+        prs_logger.info(str(uid) + "? This guy was NEVER a dude")
+    dump()
+
+
+def dump():
+    with open(pickle_path, 'wb') as f:
+        _pickle.dump(dudes, f)
