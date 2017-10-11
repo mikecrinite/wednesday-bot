@@ -64,12 +64,18 @@ async def background_loop():
                 await bot.send_file(channel, util.image(2))
                 # Sent reminder, now wait 12 hours to avoid sending another
                 await asyncio.sleep(3600 * 12)
-            # It wasn't 5am, but check every half hour
-            logger.info("A Wednesday reminder is nigh...")
-            await asyncio.sleep(1800)
-        # It wasn't Wednesday, but check every 12 hours
-        logger.info("Wednesday check: " + datetime.now().isoformat())
-        await asyncio.sleep(3600 * 12)
+            else:
+                # It wasn't 5am, but check every half hour
+                logger.info("A Wednesday reminder is nigh...")
+                await asyncio.sleep(1800)
+        elif now.weekday() == 1:
+            # It's Tuesday, start checking every hour
+            logger.info("Wednesday check: " + datetime.now().isoformat())
+            await asyncio.sleep(3600)
+        else:
+            # It wasn't Wednesday, but check every 12 hours
+            logger.info("Wednesday check: " + datetime.now().isoformat())
+            await asyncio.sleep(3600 * 12)
 
 
 @bot.event
@@ -109,7 +115,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
 
     final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
     o = requests.head(final_url)  # Make the website generate the image
-    logger.info(final_url + " responded : " + o)
+    logger.info(final_url + " responded : " + str(o))
     await bot.send_message(channel, mention + " " + final_url)
 
 
@@ -129,7 +135,7 @@ async def on_message(message):
             return
         await respond_to(message, cm.listen_to(message.content.lower()), False)
         if len(message.attachments) > 0:
-            logger.info(message.author + " sent " + message.attachments + " attachments.")
+            logger.info(str(message.author) + " sent " + str(message.attachments) + " attachments.")
             return
     await bot.process_commands(message)
 
@@ -139,7 +145,7 @@ async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
         # For now, this MUST be in meme()
         # TODO: add a help and change this message
-        logger.error(ctx.message + " : not enough arguments")
+        logger.error(str(ctx.message) + " : not enough arguments")
         await bot.send_message(ctx.message.channel, "You must input:"
                                                     "```\"Top text\""
                                                     "\"Bottom text\""
