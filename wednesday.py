@@ -4,6 +4,7 @@ from discord.ext import commands
 from discord.ext.commands import Context, MissingRequiredArgument
 from datetime import datetime
 import requests
+import asyncio
 
 import credentials  # Make your own credentials file
 from persistence import persistence
@@ -44,6 +45,32 @@ async def respond_to(message, responses, mentioned):
             return
     if len(responses) == 0 and mentioned:
         await bot.add_reaction(message, '👀')  # :eyes:
+
+
+async def background_loop():
+    """
+    wednesday-bot will send an automatic Wednesday reminder
+    to the channel in your credentials file (under the key 'channel')
+    """
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+        now = datetime.today()
+        # On wednesday, at 5am, send a reminder
+        if now.weekday() == 2:
+            if now.hour == 5:
+                logger.info("Deploying Wednesday reminder")
+                channel = bot.get_channel(credentials.get_creds('channel'))
+                await bot.send_message(channel, util.my_dudes(2))
+                await bot.send_file(channel, util.image(2))
+                # Sent reminder, now wait 12 hours to avoid sending another
+                await asyncio.sleep(3600 * 12)
+            # It wasn't 5am, but check every half hour
+            logger.info("A Wednesday reminder is nigh...")
+            await asyncio.sleep(1800)
+        # It wasn't Wednesday, but check every 12 hours
+        logger.info("Wednesday check: " + datetime.now().isoformat())
+        await asyncio.sleep(3600 * 12)
+
 
 @bot.event
 async def on_ready():
@@ -122,6 +149,9 @@ async def on_command_error(error, ctx):
 if __name__ == "__main__":
     # If script is starting, we need to load dudes
     persistence.load_dudes()
+
+    # Begin background loop
+    bot.loop.create_task(background_loop())
 
     # This MUST be the final function call that runs
     bot.run(credentials.get_creds('token'))
