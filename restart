@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #kill process with previous wednesday-bot
-pid=$(ps -x | pgrep -f "[w]ednesday")
+pid=$(ps -x | pgrep -f "[w]ednesday.py")
 echo "sleep, wednesday-bot"
 echo "killing process with pid: ${pid}"
 if [ -z ${pid} ]; then
