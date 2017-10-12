@@ -2,11 +2,11 @@
 
 pid=$(ps -x | pgrep -f "[w]ednesday.py")
 
-if [ -z "$pid" ]; then
+if [ -z "${pid}" ]; then
     echo "no"
     exit 1
 else
-    echo "yes : $pid"
+    echo "yes : ${pid}"
     exit 0
 fi
 
