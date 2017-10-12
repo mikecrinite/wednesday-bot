@@ -45,10 +45,10 @@ def thanked(message):
     :return: True if thanked
     """
     if 'no thanks' in message or 'for nothing' in message:
-        util_logger.info(message + " : false")
+        util_logger.info(str(message) + " : false")
         return False
     elif 'thank' in message:
-        util_logger.info(message + " : true")
+        util_logger.info(str(message) + " : true")
         return True
     return False
 
@@ -82,10 +82,10 @@ def url_is_valid(url):
     try:
         o = requests.head(url, allow_redirects=True)
         if o.status_code == requests.codes.ok:
-            util_logger.info(url + " responded with 200")
+            util_logger.info(str(url) + " responded with " + str(o.status_code))
             return True
         else:
             return False
     except Exception:
-        util_logger.warning("url " + url + " did not respond with a 200")
+        util_logger.warning("url " + str(url) + " did not respond with a 200")
     return False
