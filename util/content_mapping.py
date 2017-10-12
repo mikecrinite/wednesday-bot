@@ -19,7 +19,11 @@ We can probably consolidate those two functions at one point....
 listen_mappings = {
     'lol': ['', '🍭', False],
     'shit': ['', '💩', False],
-    'stop': ['', '', False]
+    'stop': ['', '', False],
+    'lmao': ['', '😂', False],
+    'cool': ['', '😎', False],
+    'wednesday': ['', '🐸', False],
+    'please': ['pls', '🙏', False]
 }
 
 mention_mappings = {
