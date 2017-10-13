@@ -156,8 +156,6 @@ async def on_message(message):
 async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
         logger.error(str(ctx.message) + " : not enough arguments")
-    await bot.send_message(ctx.message.channel, '<@' + ctx.message.author.id + '>' +
-                                                'Don\'t ruin this for everyone else. Use ?help if you need help...')
 
 
 if __name__ == "__main__":
