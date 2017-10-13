@@ -96,6 +96,26 @@ async def day(ctx):
 
 
 @bot.command(pass_context=True)
+async def help(ctx, command):
+    """
+    Get a help message, depending on command input
+    :param command: Which command do you want help with, bud?
+    """
+    channel = ctx.author
+    bot.send_message(channel,
+                     "Hey! Here's how I work:\n")
+    use_all = command is None or command is ''
+    if use_all or "day" in command:
+        bot.send_message(channel, "- use ?day to get a reminder which day it is")
+    if command is None or "meme" in command:
+        bot.send_message(channel, "- use ?meme to have a meme generated for you\n"
+                                  "\tThe syntax is \'?meme \"top text\" \"bottom text\" "
+                                  "\"url of background image\"\'\n")
+    if command is None or "help" in command:
+        bot.send_message(channel,  "- use ?help to ... get this message again, I guess...")
+
+
+@bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     logger.info(ctx.message.author + " requested : " + top_text + " " + bottom_text + " " + image_url)
     if not util.url_is_valid(image_url):
@@ -143,13 +163,9 @@ async def on_message(message):
 @bot.event
 async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
-        # For now, this MUST be in meme()
-        # TODO: add a help and change this message
         logger.error(str(ctx.message) + " : not enough arguments")
-        await bot.send_message(ctx.message.channel, "You must input:"
-                                                    "```\"Top text\""
-                                                    "\"Bottom text\""
-                                                    "\"image_url\"")
+    await bot.send_message(ctx.message.channel, '<@' + ctx.message.author.id + '>' +
+                                                'Don\'t ruin this for everyone else. Use ?help if you need help...')
 
 
 if __name__ == "__main__":
