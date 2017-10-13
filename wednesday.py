@@ -96,7 +96,7 @@ async def day(ctx):
 
 
 @bot.command(pass_context=True)
-async def help(ctx, command):
+async def helpme(ctx, command):
     """
     Get a help message, depending on command input
     :param command: Which command do you want help with, bud?
@@ -111,8 +111,8 @@ async def help(ctx, command):
         bot.send_message(channel, "- use ?meme to have a meme generated for you\n"
                                   "\tThe syntax is \'?meme \"top text\" \"bottom text\" "
                                   "\"url of background image\"\'\n")
-    if command is None or "help" in command:
-        bot.send_message(channel,  "- use ?help to ... get this message again, I guess...")
+    if command is None or "helpme" in command:
+        bot.send_message(channel,  "- use ?helpme to ... get this message again, I guess...")
 
 
 @bot.command(pass_context=True)
