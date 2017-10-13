@@ -89,6 +89,10 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def day(ctx):
+    """
+    Prints a helpful, friendly message to let you know which day of the week it is.
+    Also provides a helpful visual, in case you are still confused.
+    """
     channel = ctx.message.channel
     today = datetime.today().weekday()
     await bot.say(util.my_dudes(today))
@@ -96,27 +100,15 @@ async def day(ctx):
 
 
 @bot.command(pass_context=True)
-async def helpme(ctx, command):
-    """
-    Get a help message, depending on command input
-    :param command: Which command do you want help with, bud?
-    """
-    channel = ctx.author
-    bot.send_message(channel,
-                     "Hey! Here's how I work:\n")
-    use_all = command is None or command is ''
-    if use_all or "day" in command:
-        bot.send_message(channel, "- use ?day to get a reminder which day it is")
-    if command is None or "meme" in command:
-        bot.send_message(channel, "- use ?meme to have a meme generated for you\n"
-                                  "\tThe syntax is \'?meme \"top text\" \"bottom text\" "
-                                  "\"url of background image\"\'\n")
-    if command is None or "helpme" in command:
-        bot.send_message(channel,  "- use ?helpme to ... get this message again, I guess...")
-
-
-@bot.command(pass_context=True)
 async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
+    """
+    Generates a meme of variable dankness. Dankness depends on your inputs for top text, botton text
+    and background image url, all three of which must be surrounded in quotes.
+
+    :param top_text: Required: must be surrounded in quotes
+    :param bottom_text: Required: must be surrounded in quotes
+    :param image_url: Required: must be surrounded in quotes
+    """
     logger.info(ctx.message.author + " requested : " + top_text + " " + bottom_text + " " + image_url)
     if not util.url_is_valid(image_url):
         await bot.send_message(ctx.message.channel,
