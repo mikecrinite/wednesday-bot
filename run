@@ -13,7 +13,7 @@ fi
 # Run wednesday-bot in background.
 # Redirect error output to /logs/errors
 # TODO: Find out why output doesn't go to /logs/wb_err
-nohup python3 -u wednesday.py > logs/old/wb_err.log 2>&1&
+nohup python3 -u wednesday.py > logs/wb_err.log 2>&1&
 sleep 1
 echo '
 '
