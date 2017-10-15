@@ -2,7 +2,7 @@ import json
 import os
 import random
 
-from jeopardy.JeopardyQuestion import JeopardyQuestion as J
+from jeopardy.JeopardyQuestion import JeopardyQuestion as jq
 
 
 class Jeopardy:
@@ -29,7 +29,7 @@ class Jeopardy:
         the question formatted as a pretty string
         :return: The question as a string formatted for Discord
         """
-        self.curr = J(random.choice(self.questions))
+        self.curr = jq(random.choice(self.questions))
         return self.curr.pretty_format_discord()
 
     def response(self, response: str):

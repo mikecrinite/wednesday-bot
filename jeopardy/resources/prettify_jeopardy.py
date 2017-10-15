@@ -6,5 +6,3 @@ if __name__ == '__main__':
 
     with open('JEOPARDY_READABLE.json', 'w') as w:
         w.write(pretty)
-
-
