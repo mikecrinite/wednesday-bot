@@ -42,6 +42,4 @@ class Jeopardy:
 
 if __name__ == '__main__':
     j = Jeopardy()
-    print(j.get_random_question())
-    print(j.response("Jim Thorpe"))
 
