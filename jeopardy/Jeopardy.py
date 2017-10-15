@@ -1,4 +1,5 @@
 import json
+import os
 import random
 
 from jeopardy.JeopardyQuestion import JeopardyQuestion as J
@@ -18,7 +19,8 @@ class Jeopardy:
         self.load_questions()
 
     def load_questions(self):
-        with open('resources/JEOPARDY_QUESTIONS.json', 'r') as f:
+        questions = os.path.join(os.path.dirname(__file__), 'resources/JEOPARDY_QUESTIONS.json')
+        with open(questions, 'r') as f:
             self.questions = json.load(f)
 
     def get_random_question(self):
