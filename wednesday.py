@@ -10,6 +10,7 @@ import credentials  # Make your own credentials file
 from persistence import persistence
 from util import util
 from util import content_mapping as cm
+from jeopardy.Jeopardy import Jeopardy
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -32,6 +33,9 @@ cm.cm_logger.addHandler(handler)
 
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
+
+# Set up a Jeopardy
+jeopardy = Jeopardy()
 
 
 async def respond_to(message, responses, mentioned):
@@ -130,6 +134,13 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     logger.info(final_url + " responded : " + str(o))
     await bot.send_message(channel, mention + " " + final_url)
 
+
+@bot.command(pass_context=True)
+async def jeopardy(ctx):
+    """
+    Get a jeopardy question from WB. Answer correctly to earn REAL WEDNESDAY-BUCKS!
+    """
+    bot.send_message(ctx.message.channel, jeopardy.get_random_question())
 
 @bot.event
 async def on_message(message):
