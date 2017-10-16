@@ -16,32 +16,34 @@ questions = []
 curr = None
 
 
-def load_questions(self):
+def load_questions():
+    global questions
     questions = os.path.join(os.path.dirname(__file__), 'resources/JEOPARDY_QUESTIONS.json')
     with open(questions, 'r') as f:
-        self.questions = json.load(f)
+        questions = json.load(f)
 
 
-def get_random_question(self):
+def get_random_question():
     """
     Retrieves a random question from the list of questions and returns
     the question formatted as a pretty string
     :return: The question as a string formatted for Discord
     """
-    self.curr = jq(random.choice(self.questions))
+    global curr
+    curr = jq(random.choice(questions))
 
-    return self.curr.pretty_format_discord()
+    return curr.pretty_format_discord()
 
 
-def response(self, response: str):
-    if response.lower() == self.curr.answer.lower():
-        return [True, self.curr.value]
+def response(resp: str):
+    if resp.lower() == curr.answer.lower():
+        return [True, curr.value]
     else:
         return [False, "Incorrect"]
 
 
-def no_response(self):
-    return "The correct response was: " + self.curr.answer
+def no_response():
+    return "The correct response was: " + curr.answer
 
 
 # Set up Jeopardy
