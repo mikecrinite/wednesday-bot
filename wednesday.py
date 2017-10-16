@@ -49,7 +49,7 @@ async def respond_to(message, responses, mentioned):
         await bot.add_reaction(message, '👀')  # :eyes:
 
 
-async def background_loop():
+async def wednesday_reminder():
     """
     wednesday-bot will send an automatic Wednesday reminder
     to the channel in your credentials file (under the key 'channel')
@@ -78,6 +78,10 @@ async def background_loop():
             # It wasn't Wednesday, but check every 12 hours
             logger.info("Wednesday check: " + datetime.now().isoformat())
             await asyncio.sleep(3600 * 12)
+        # Jeopardy timer (10 seconds)
+        if Jeopardy.active:
+            await asyncio.sleep(10)
+            Jeopardy.active = False
 
 
 @bot.event
@@ -138,12 +142,15 @@ async def jeopardy(ctx):
     """
     Get a jeopardy question from WB. Answer correctly to earn REAL WEDNESDAY-BUCKS!
     """
-    bot.send_message(ctx.message.channel, jeopardy.get_random_question())
+    await bot.send_message(ctx.message.channel, Jeopardy.get_random_question())
 
 
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
+        if Jeopardy.active:
+            result = Jeopardy.response(message)
+            await bot.send_message(message.channel, result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
@@ -173,7 +180,7 @@ if __name__ == "__main__":
     persistence.load_dudes()
 
     # Begin background loop
-    bot.loop.create_task(background_loop())
+    bot.loop.create_task(wednesday_reminder())
 
     # This MUST be the final function call that runs
     bot.run(credentials.get_creds('token'))
