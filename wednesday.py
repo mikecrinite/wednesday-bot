@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 import logging
+import requests
+import asyncio
+from asyncio import CancelledError
 from discord.ext import commands
 from discord.ext.commands import Context, MissingRequiredArgument
 from datetime import datetime
-import requests
-import asyncio
+
 
 import credentials  # Make your own credentials file
 from persistence import persistence
@@ -54,6 +56,7 @@ async def wednesday_reminder():
     wednesday-bot will send an automatic Wednesday reminder
     to the channel in your credentials file (under the key 'channel')
     """
+    asyncio.AbstractEventLoop.set_debug()
     await bot.wait_until_ready()
     while not bot.is_closed:
         now = datetime.today()
@@ -173,6 +176,8 @@ async def on_message(message):
 async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
         logger.error(str(ctx.message) + " : not enough arguments")
+    if error == CancelledError:
+        logger.error(str(error))
 
 
 if __name__ == "__main__":
