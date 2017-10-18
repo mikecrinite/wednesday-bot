@@ -35,6 +35,9 @@ cm.cm_logger.addHandler(handler)
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
 
+# Specify Wednesday discord channel
+wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
+
 
 async def respond_to(message, responses, mentioned):
     channel = message.channel
@@ -54,31 +57,20 @@ async def background_loop():
     wednesday-bot will send an automatic Wednesday reminder
     to the channel in your credentials file (under the key 'channel')
     """
-    asyncio.AbstractEventLoop.set_debug()
+    flag = False
     await bot.wait_until_ready()
     while not bot.is_closed:
         now = datetime.today()
-        # On wednesday, at 5am, send a reminder
-        if now.weekday() == 2:
-            if now.hour == 5:
+        if now.weekday() == 2 and now.hour == 6 and not flag:  # 6am on Wednesday, if no reminder sent already
                 logger.info("Deploying Wednesday reminder")
-                channel = bot.get_channel(credentials.get_creds('channel'))
-                await bot.send_message(channel, util.my_dudes(2))
-                await bot.send_file(channel, util.image(2))
-                # Sent reminder, now wait 12 hours to avoid sending another
-                await asyncio.sleep(3600 * 12)
-            else:
-                # It wasn't 5am, but check every half hour
-                logger.info("A Wednesday reminder is nigh...")
-                await asyncio.sleep(1800)
-        elif now.weekday() == 1:
-            # It's Tuesday, start checking every hour
-            logger.info("Wednesday check: " + datetime.now().isoformat())
-            await asyncio.sleep(3600)
+                await bot.send_message(wednesday_channel, util.my_dudes(2))
+                await bot.send_file(wednesday_channel, util.image(2))
+                flag = True
         else:
-            # It wasn't Wednesday, but check every 12 hours
-            logger.info("Wednesday check: " + datetime.now().isoformat())
-            await asyncio.sleep(3600 * 12)
+            if flag:
+                logger.info("Resetting Wednesday reminder flag")
+                flag = False
+        await asyncio.sleep(30)  # Discord.py needs control once every minute. Sleeping for minutes kills this task
 
 
 @bot.event
