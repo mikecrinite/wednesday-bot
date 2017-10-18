@@ -81,10 +81,6 @@ async def wednesday_reminder():
             # It wasn't Wednesday, but check every 12 hours
             logger.info("Wednesday check: " + datetime.now().isoformat())
             await asyncio.sleep(3600 * 12)
-        # Jeopardy timer (10 seconds)
-        if Jeopardy.active:
-            await asyncio.sleep(10)
-            Jeopardy.active = False
 
 
 @bot.event
@@ -143,7 +139,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
 @bot.command(pass_context=True)
 async def jeopardy(ctx):
     """
-    Get a jeopardy question from WB. Answer correctly to earn REAL WEDNESDAY-BUCKS!
+    WIP: Get a jeopardy question from WB. Answer correctly to earn REAL WEDNESDAY-BUCKS!
     """
     await bot.send_message(ctx.message.channel, Jeopardy.get_random_question())
 
@@ -152,7 +148,7 @@ async def jeopardy(ctx):
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if Jeopardy.active:
-            result = Jeopardy.response(message)
+            result = Jeopardy.response(message.content)
             await bot.send_message(message.channel, result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
