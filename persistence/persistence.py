@@ -1,8 +1,10 @@
+import os
 import _pickle
 import logging
 
 dudes = []  # list of dudes
-pickle_path = './persistence/dudes.pk'
+pickle_path = os.path.join(os.path.dirname(__file__), 'dudes.pk')
+# pickle_path = './persistence/dudes.pk'
 
 prs_logger = logging.getLogger("wednesday.persistence")
 prs_logger.setLevel(logging.INFO)
