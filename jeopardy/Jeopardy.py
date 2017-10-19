@@ -38,9 +38,9 @@ def get_random_question():
     return curr.pretty_format_discord()
 
 
-def response(resp: str):
-    if curr.answer.lower() in resp.lower() \
-            or resp.lower() in curr.answer.lower():
+def response(resp: str):  # resp should be lower already
+    if curr.answer.lower() in resp \
+            or resp in curr.answer.lower():
         global active
         active = False
         return [True, curr.value]

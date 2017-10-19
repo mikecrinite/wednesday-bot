@@ -40,7 +40,6 @@ bot = commands.Bot(command_prefix='?', description=description)
 
 # Specify Wednesday discord channel
 wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
-j_regex = re.compile('(what|who)\s+(is|was|are|were).*')
 
 
 async def respond_to(message, responses, mentioned):
@@ -141,7 +140,7 @@ async def jeopardy(ctx):
     await bot.send_message(ctx.message.channel, Jeopardy.get_random_question())
     time = 0
     while Jeopardy.active:
-        if time == 15:
+        if time == 10:
             await bot.send_message(ctx.message.channel, "The answer was: " + Jeopardy.curr.answer)
             Jeopardy.active = False
         time += 1
@@ -152,9 +151,9 @@ async def jeopardy(ctx):
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if Jeopardy.active:
-            if j_regex.match(message.content.lower()):
-                j_regex.sub(message.content.lower(), '')  # remove the question and just send the response
-                result = Jeopardy.response(message.content)
+            if re.match('(what|who)\s+(is|was|are|were).*', message.content.lower()):
+                result = re.sub('^(what|who)\s+(is|was|are|were)\s+', '', message.content.lower())  # just send response
+                result = Jeopardy.response(result)
                 await bot.send_message(message.channel, str(message.author) + " ---> " + result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
