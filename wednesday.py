@@ -154,8 +154,9 @@ async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if Jeopardy.active:
             if j_regex.match(message.content.lower()):
+                j_regex.sub(message.content.lower(), '')  # remove the question and just send the response
                 result = Jeopardy.response(message.content)
-                await bot.send_message(message.channel, str(message.author) + "--->" + result[1])
+                await bot.send_message(message.channel, str(message.author) + " ---> " + result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
