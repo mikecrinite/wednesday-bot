@@ -2,6 +2,7 @@
 import logging
 import requests
 import asyncio
+import re
 from asyncio import CancelledError
 from discord.ext import commands
 from discord.ext.commands import Context, MissingRequiredArgument
@@ -39,6 +40,7 @@ bot = commands.Bot(command_prefix='?', description=description)
 
 # Specify Wednesday discord channel
 wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
+j_regex = re.compile('(what|who)\s+(is|was|are|were).*')
 
 
 async def respond_to(message, responses, mentioned):
@@ -133,15 +135,27 @@ async def jeopardy(ctx):
     """
     WIP: Get a jeopardy question from WB. Answer correctly to earn REAL WEDNESDAY-BUCKS!
     """
+    if Jeopardy.active:
+        bot.send_message(ctx.message.channel, "You are already playing jeopardy")
+        return
     await bot.send_message(ctx.message.channel, Jeopardy.get_random_question())
+    time = 0
+    while Jeopardy.active:
+        if time == 10:
+            await bot.send_message(ctx.message.channel, "The answer was: " + Jeopardy.curr.answer)
+            Jeopardy.active = False
+        time += 1
+        logger.info(time)
+        await asyncio.sleep(1)
 
 
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
         if Jeopardy.active:
-            result = Jeopardy.response(message.content)
-            await bot.send_message(message.channel, result[1])
+            if j_regex.match(message.content.lower()):
+                result = Jeopardy.response(message.content)
+                await bot.send_message(message.channel, str(message.author) + "--->" + result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')
