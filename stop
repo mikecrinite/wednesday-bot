@@ -2,10 +2,10 @@
 
 #kill process with previous wednesday-bot
 pid=$(ps -x | pgrep -f "[w]ednesday.py")
-echo "sleep, wednesday-bot"
 if [ -z ${pid} ]; then
     echo "wednesday-bot was not running"
 else
+    echo "sleep, wednesday-bot"
     echo "killing process with pid: ${pid}"
     kill ${pid}
 fi
