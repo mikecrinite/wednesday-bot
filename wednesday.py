@@ -107,7 +107,7 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
     :param bottom_text: Required: must be surrounded in quotes
     :param image_url: Required: must be surrounded in quotes
     """
-    logger.info(ctx.message.author + " requested : " + top_text + " " + bottom_text + " " + image_url)
+    logger.info(str(ctx.message.author) + " requested : " + top_text + " " + bottom_text + " " + image_url)
     if not util.url_is_valid(image_url):
         await bot.send_message(ctx.message.channel,
                                "You accidentally entered too many arguments. Or maybe even did it on purpose..."
@@ -176,7 +176,7 @@ async def on_message(message):
 @bot.event
 async def on_command_error(error, ctx):
     if error == MissingRequiredArgument:
-        logger.error(str(ctx.message) + " : not enough arguments")
+        logger.error(str(ctx.message) + " : not enough arguments\n" + str(error))
     if error == CancelledError:
         logger.error(str(error))
 
