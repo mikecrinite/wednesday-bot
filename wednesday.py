@@ -39,7 +39,7 @@ Jeopardy.jeopardy_logger.addHandler(handler)
 bot = commands.Bot(command_prefix='?', description=description)
 
 # Specify Wednesday discord channel
-wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
+wednesday_channel = None
 
 
 async def respond_to(message, responses, mentioned):
@@ -60,15 +60,18 @@ async def wednesday_reminder():
     wednesday-bot will send an automatic Wednesday reminder
     to the channel in your credentials file (under the key 'channel')
     """
+    global wednesday_channel
     flag = False
     await bot.wait_until_ready()
     while not bot.is_closed:
         now = datetime.today()
+        # Set up wednesday_channel
+        wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
         if now.weekday() == 2 and now.hour == 6 and not flag:  # 6am on Wednesday, if no reminder sent already
-                logger.info("Deploying Wednesday reminder")
-                await bot.send_message(wednesday_channel, util.my_dudes(2))
-                await bot.send_file(wednesday_channel, util.image(2))
-                flag = True
+            logger.info("Deploying Wednesday reminder")
+            await bot.send_message(wednesday_channel, util.my_dudes(2))
+            await bot.send_file(wednesday_channel, util.image(2))
+            flag = True
         else:
             if flag:
                 logger.info("Resetting Wednesday reminder flag")
