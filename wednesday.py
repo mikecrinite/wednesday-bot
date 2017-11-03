@@ -73,7 +73,7 @@ async def wednesday_reminder():
             await bot.send_file(wednesday_channel, util.image(2))
             flag = True
         else:
-            if flag:
+            if flag and not now.hour == 6:
                 logger.info("Resetting Wednesday reminder flag")
                 flag = False
         await asyncio.sleep(30)  # Discord.py needs control once every minute. Sleeping for minutes kills this task
