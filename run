@@ -8,16 +8,17 @@ fi
 
 touch logs/wednesday.log
 
+# Stop using this once we confirm the below > to >> works
 # Move wb_err.log if it exists
 if [ -f logs/wb_err.log ]; then
     mv logs/wb_err.log logs/old/wb_err_${date}.log
 fi
 
-touch logs/wednesday.log
+touch logs/wb_err.log
 
 # Run wednesday-bot in background.
 # Redirect error output to /logs/wb_error.log
-nohup python3 -u wednesday.py > logs/wb_err.log 2>&1&
+nohup python3 -u wednesday.py >> logs/wednesday.log 2>&1&
 sleep 1
 echo '
 '

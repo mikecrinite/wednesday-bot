@@ -6,6 +6,6 @@ if [ -z ${pid} ]; then
     echo "wednesday-bot was not running"
 else
     echo "sleep, wednesday-bot"
-    echo "killing process with pid: ${pid}"
+    echo "ending process with pid: ${pid}"
     kill ${pid}
 fi
