@@ -14,6 +14,7 @@ from persistence import persistence
 from util import util
 from util import content_mapping as cm
 from jeopardy import Jeopardy
+from persistence.docker import docker
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -34,6 +35,7 @@ persistence.prs_logger.addHandler(handler)
 util.util_logger.addHandler(handler)
 cm.cm_logger.addHandler(handler)
 Jeopardy.jeopardy_logger.addHandler(handler)
+docker.docker_logger.addHandler(handler)
 
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
