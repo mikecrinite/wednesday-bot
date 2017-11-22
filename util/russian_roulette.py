@@ -1,4 +1,5 @@
 import random
+import logging
 
 # Russian roulette
 chamber = [False, False, False, False, False, False]
@@ -29,3 +30,9 @@ def pull_trigger():
     else:
         reset()
     return dead
+
+
+# Set up Logger
+rr_logger = logging.getLogger('wednesday.rr')
+rr_logger.setLevel(logging.INFO)
+load()

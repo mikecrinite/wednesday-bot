@@ -35,6 +35,7 @@ persistence.prs_logger.addHandler(handler)
 util.util_logger.addHandler(handler)
 cm.cm_logger.addHandler(handler)
 Jeopardy.jeopardy_logger.addHandler(handler)
+rr.rr_logger.addHandler(handler)
 
 # Set up wednesday-bot with ? command prefix
 bot = commands.Bot(command_prefix='?', description=description)
@@ -161,10 +162,9 @@ async def russian_roulette(ctx):
     dead = rr.pull_trigger()
     mention = '<@' + ctx.message.author.id + '>'
     if dead:
-        bot.send_message(ctx.message.channel, mention + " ---> You died. Good riddance...")
-        rr.reset()
+        await bot.send_message(ctx.message.channel, mention + " ---> You died. Good riddance...")
     else:
-        bot.send_message(ctx.message.channel, mention + " ---> Unforunately, you survived. Who's next?")
+        await bot.send_message(ctx.message.channel, mention + " ---> Unforunately, you survived. Who's next?")
 
 
 @bot.event
