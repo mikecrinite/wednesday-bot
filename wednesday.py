@@ -14,6 +14,7 @@ from persistence import persistence
 from util import util
 from util import content_mapping as cm
 from jeopardy import Jeopardy
+from util import russian_roulette as rr
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -151,6 +152,21 @@ async def jeopardy(ctx):
         await asyncio.sleep(1)
 
 
+@bot.command(pass_context=True)
+async def russian_roulette(ctx):
+    # load the gun
+    if not rr.is_loaded():
+        rr.load()
+    # take your shot
+    dead = rr.pull_trigger()
+    mention = '<@' + ctx.message.author.id + '>'
+    if dead:
+        bot.send_message(ctx.message.channel, mention + " ---> You died. Good riddance...")
+        rr.reset()
+    else:
+        bot.send_message(ctx.message.channel, mention + " ---> Unforunately, you survived. Who's next?")
+
+
 @bot.event
 async def on_message(message):
     if not message.author.id == bot.user.id:  # don't reply to your own messages
@@ -158,7 +174,7 @@ async def on_message(message):
             if re.match('(what|who)\s+(is|was|are|were).*', message.content.lower()):
                 result = re.sub('^(what|who)\s+(is|was|are|were)\s+', '', message.content.lower())  # just send response
                 result = Jeopardy.response(result)
-                await bot.send_message(message.channel, str(message.author) + " ---> " + result[1])
+                await bot.send_message(message.channel, str('<@' + message.author.id + '>') + " ---> " + result[1])
         if message.channel.is_private:
             if not persistence.is_dude(message.author.id):
                 await bot.send_message(message.channel, 'Hey there. Slidin in the DMs are we?')

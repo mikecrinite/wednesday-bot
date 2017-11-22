@@ -1,1 +1,1 @@
-__all__ = ['content_mapping', 'util']
+__all__ = ['content_mapping', 'util', 'russian_roulette']
