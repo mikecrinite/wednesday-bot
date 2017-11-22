@@ -18,8 +18,9 @@ def load():
 
 
 def reset():
-    global chamber
+    global chamber, current_chamber
     chamber = [False, False, False, False, False, False]
+    current_chamber = 0
 
 
 def pull_trigger():

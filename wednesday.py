@@ -164,7 +164,7 @@ async def russian_roulette(ctx):
     if dead:
         await bot.send_message(ctx.message.channel, mention + " ---> You died. Good riddance...")
     else:
-        await bot.send_message(ctx.message.channel, mention + " ---> Unforunately, you survived. Who's next?")
+        await bot.send_message(ctx.message.channel, mention + " ---> Unfortunately, you survived. Who's next?")
 
 
 @bot.event
