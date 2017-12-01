@@ -145,11 +145,10 @@ async def jeopardy(ctx):
     await bot.send_message(ctx.message.channel, Jeopardy.get_random_question())
     time = 0
     while Jeopardy.active:
-        if time == 15:
+        if time >= 15:
             await bot.send_message(ctx.message.channel, "The answer was: " + Jeopardy.curr.answer)
             Jeopardy.active = False
         time += 1
-        logger.info("Count: " + str(time) + " : " + str(datetime.now()))
         await asyncio.sleep(1)
 
 
