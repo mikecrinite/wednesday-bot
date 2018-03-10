@@ -43,6 +43,9 @@ bot = commands.Bot(command_prefix='?', description=description)
 # Specify Wednesday discord channel
 wednesday_channel = None
 
+# Game controllers
+rr_controllers = {}
+
 
 async def respond_to(message, responses, mentioned):
     channel = message.channel
@@ -154,16 +157,24 @@ async def jeopardy(ctx):
 
 @bot.command(pass_context=True)
 async def russian_roulette(ctx):
+    # is there already a game?
+    channel = ctx.message.channel
+    if channel not in rr_controllers:
+        gun = rr.RussianRoulette()
+        rr_controllers[channel] = gun
+    else:
+        gun = rr_controllers[channel]
+
     # load the gun
-    if not rr.is_loaded():
-        rr.load()
+    if not gun.is_loaded():
+        gun.load()
     # take your shot
-    dead = rr.pull_trigger()
+    dead = gun.pull_trigger()
     mention = '<@' + ctx.message.author.id + '>'
     if dead:
-        await bot.send_message(ctx.message.channel, mention + " ---> You died. Good riddance...")
+        await bot.send_message(ctx.message.channel, mention + rr.get_dead_msg())
     else:
-        await bot.send_message(ctx.message.channel, mention + " ---> Unfortunately, you survived. Who's next?")
+        await bot.send_message(ctx.message.channel, mention + rr.get_alive_msg())
 
 
 @bot.event
