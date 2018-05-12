@@ -2,6 +2,9 @@
 
 SERVICE=wednesdaybot
 
-docker build -t $SERVICE:latest .
+# Stop any running wb
+docker stop wednesdaybot
+docker rm wednesdaybot
 
-docker run --name="wednesdaybot" -d $SERVICE:latest
+docker build -t $SERVICE .
+docker run --name=$SERVICE -d $SERVICE

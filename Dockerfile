@@ -2,6 +2,7 @@ FROM python:3.6
 
 ADD / /
 
-RUN pip install -r requirements.txt --no-index --find-links file:///tmp/packages
+RUN pip install -r requirements.txt
+RUN alias logs='tail -F logs/wednesday.log'
 
-CMD [ "bash", "./run" ]
+CMD [ "python3", "wednesday.py" ]
