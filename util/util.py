@@ -72,6 +72,16 @@ def prepare_for_memegen(text):
     return text
 
 
+def make_memegen_message(top_text: str, bottom_text: str, image_url: str):
+    top_text = prepare_for_memegen(top_text)
+    bottom_text = prepare_for_memegen(bottom_text)
+
+    base_url = "https://memegen.link/custom/"
+    image_url = "?alt=" + image_url
+
+    return base_url + top_text + "/" + bottom_text + ".jpg" + image_url
+
+
 def url_is_valid(url):
     """
     Uses the Requests library to attempt to access a url, and

@@ -14,7 +14,7 @@ from persistence import persistence
 from util import util
 from util import content_mapping as cm
 from jeopardy import Jeopardy
-from util import russian_roulette as rr
+from games import russian_roulette as rr
 
 description = """Is it Wednesday, my dudes?"""
 
@@ -124,17 +124,10 @@ async def meme(ctx, top_text: str, bottom_text: str, image_url: str):
                                "If you think you got this message in error, I'm sorry to hear that")
         return
     mention = '<@' + ctx.message.author.id + '>'
-    channel = ctx.message.channel
-    top_text = util.prepare_for_memegen(top_text)
-    bottom_text = util.prepare_for_memegen(bottom_text)
-
-    base_url = "https://memegen.link/custom/"
-    image_url = "?alt=" + image_url
-
-    final_url = base_url + top_text + "/" + bottom_text + ".jpg" + image_url
+    final_url = util.make_memegen_message(top_text, bottom_text, image_url)
     o = requests.head(final_url)  # Make the website generate the image
     logger.info(final_url + " responded : " + str(o))
-    await bot.send_message(channel, mention + " " + final_url)
+    await bot.send_message(ctx.message.channel, mention + " " + final_url)
 
 
 @bot.command(pass_context=True)
@@ -153,6 +146,12 @@ async def jeopardy(ctx):
             Jeopardy.active = False
         time += 1
         await asyncio.sleep(1)
+
+
+@bot.command(pass_context=True)
+async def rr(ctx):
+    """shorthand for russian_roulette cuz that's a lot to type..."""
+    russian_roulette(ctx)
 
 
 @bot.command(pass_context=True)
