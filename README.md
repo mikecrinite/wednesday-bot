@@ -11,6 +11,24 @@ If you came here because you need help figuring out your own Discord bot, feel f
 - ?jeopardy: WB will provide you with a jeopardy clue. Respond in the form of a question (as per the Jeopardy rules) and possibly in the future WB will remember your total
 - ?russian_roulette: Find out how it feels to REALLY be ALIVE! (Possible side-effects include death)
 
+### Startup:
+
+You'll need a ```credentials.py``` file with this format:
+```
+def get_creds(x):
+    return {
+        'token': 'your_discord_api_token',
+        'channel': 123456789  # The channel id that wednesday bot should send reminders to
+    }[x]
+
+```
+
+There are three ways you can run this bad boy:
+
+1. You can use ```./dockerizeAndRun``` which will dockerize and run the service. This is kind of in its infancy but since this project is also for teaching myself some stuff, I'm not worried about it being sexy right now.
+2. Use the ```./run``` script which will handle log rotation and then ask if WB is alive. You can ```./stop``` to kill the process or ```./restart``` to fetch the latest from git and then start up the bot with the latest changes. This is probably the best way tbh.
+3. You can just run ```python3 wednesday.py``` or ```./wednesday.py``` 
+
 ### FAQ: 
 
 #### Why?
