@@ -7,4 +7,4 @@ docker stop wednesdaybot
 docker rm wednesdaybot
 
 docker build -t $SERVICE .
-docker run --name=$SERVICE -d $SERVICE
+docker run --name=$SERVICE -d --restart on-failure $SERVICE
