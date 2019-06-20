@@ -8,6 +8,11 @@ fi
 
 touch logs/wednesday.log
 
+# set env vars if user has an env.sh
+if [ -f env.sh ]; then
+    source ./env.sh
+fi
+
 # Run wednesday-bot in background.
 # Redirect error output to /logs/wb_error.log
 nohup python3 -u wednesday.py >> logs/wednesday.log 2>&1&

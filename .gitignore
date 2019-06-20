@@ -1,5 +1,6 @@
 # Don't add your credentials
 credentials.py
+env.sh
 
 # Don't add the logs
 logs/*

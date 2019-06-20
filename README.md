@@ -6,21 +6,17 @@ If you came here because you need help figuring out your own Discord bot, feel f
 
 ### Command(s):
 
-- ?day : wednesday-bot will tell you what day it is and provide a helpful visual aid, should you continue to be confused but just don't want to admit it. Often, on days other than Wednesday, the visual aid will simply alert you that it is in fact not Wednesday, which is really the only important thing you need to know.
-- ?meme : wednesday-bot will create a link to https://memegen.link that you can use to generate an image macro for your given text and image
-- ?jeopardy: WB will provide you with a jeopardy clue. Respond in the form of a question (as per the Jeopardy rules) and possibly in the future WB will remember your total
-- ?russian_roulette: Find out how it feels to REALLY be ALIVE! (Possible side-effects include death)
+- `?day` : wednesday-bot will tell you what day it is and provide a helpful visual aid, should you continue to be confused but just don't want to admit it. Often, on days other than Wednesday, the visual aid will simply alert you that it is in fact not Wednesday, which is really the only important thing you need to know.
+- `?meme` : wednesday-bot will create a link to https://memegen.link that you can use to generate an image macro for your given text and image
+- `?jeopardy`: WB will provide you with a jeopardy clue. Respond in the form of a question (as per the Jeopardy rules) and possibly in the future WB will remember your total
+- `?russian_roulette`: Find out how it feels to REALLY be ALIVE! (Possible side-effects include death)
 
 ### Startup:
 
-You'll need a ```credentials.py``` file with this format:
+You'll need to set some environment variables:
 ```
-def get_creds(x):
-    return {
-        'token': 'your_discord_api_token',
-        'channel': 123456789  # The channel id that wednesday bot should send reminders to
-    }[x]
-
+TOKEN:     your_discord_api_token
+CHANNEL:   123456789  # The channel id that wednesday bot should send reminders to
 ```
 
 There are three ways you can run this bad boy:

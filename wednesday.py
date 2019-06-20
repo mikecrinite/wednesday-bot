@@ -3,13 +3,12 @@ import logging
 import requests
 import asyncio
 import re
+import os
 from asyncio import CancelledError
 from discord.ext import commands
 from discord.ext.commands import Context, MissingRequiredArgument
 from datetime import datetime
 
-
-import credentials  # Make your own credentials file
 from persistence import persistence
 from util import util
 from util import content_mapping as cm
@@ -46,6 +45,15 @@ wednesday_channel = None
 # Game controllers
 rr_controllers = {}
 
+__CHANNEL__ = os.getenv('CHANNEL')
+__TOKEN__ = os.getenv('TOKEN')
+
+if __CHANNEL__ is None:
+    logger.error('You must set CHANNEL in your environment')
+
+if __TOKEN__ is None:
+    logger.error('You must set TOKEN in your environment')
+
 
 async def respond_to(message, responses, mentioned):
     channel = message.channel
@@ -62,8 +70,7 @@ async def respond_to(message, responses, mentioned):
 
 async def wednesday_reminder():
     """
-    wednesday-bot will send an automatic Wednesday reminder
-    to the channel in your credentials file (under the key 'channel')
+    wednesday-bot will send an automatic Wednesday reminder to the channel set in your ENV
     """
     global wednesday_channel
     flag = False
@@ -71,7 +78,7 @@ async def wednesday_reminder():
     while not bot.is_closed:
         now = datetime.today()
         # Set up wednesday_channel
-        wednesday_channel = bot.get_channel(credentials.get_creds('channel'))
+        wednesday_channel = bot.get_channel(__CHANNEL__)
         if now.weekday() == 2 and now.hour == 6 and not flag:  # 6am on Wednesday, if no reminder sent already
             logger.info("Deploying Wednesday reminder")
             await bot.send_message(wednesday_channel, util.my_dudes(2))
@@ -219,4 +226,4 @@ if __name__ == "__main__":
     bot.loop.create_task(wednesday_reminder())
 
     # This MUST be the final function call that runs
-    bot.run(credentials.get_creds('token'))
+    bot.run(__TOKEN__)
