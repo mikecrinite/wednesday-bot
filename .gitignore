@@ -21,3 +21,6 @@ __pycache__/
 # linux stuff
 nohup.out
 *.nohup.*
+
+#other
+.DS_Store
